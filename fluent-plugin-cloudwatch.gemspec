@@ -4,8 +4,8 @@ $:.push File.expand_path("../lib", __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Yusuke Nomura"]
   gem.email         = ["yunomu@gmail.com"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{Output filter plugin}
+  gem.description   = %q{Input plugin}
+  gem.summary       = %q{Input plugin}
   gem.homepage      = "https://github.com/yunomu"
 
   gem.files         = `git ls-files`.split($\)
