@@ -5,10 +5,10 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :access_key, :string
   config_param :secret_key, :string
   config_param :endpoint, :string, :default => "monitoring.amazonaws.com"
-  config_param :namespace, :string
-  config_param :statistics, :string
-  config_param :dimensions, :string
-  config_param :metric_name, :string
+#  config_param :namespace, :string
+#  config_param :statistics, :string
+#  config_param :dimensions, :string
+#  config_param :metric_name, :string
 
   def initialize
     super
@@ -23,6 +23,15 @@ class Fluent::CloudwatchInput < Fluent::Input
       :access_key_id => access_key,
       :secret_access_key => secret_key,
       :server => endpoint)
+
+    @metrics = conf.elements.select {|e|
+      e.name == 'metric'
+    }.map {|e|
+      {:namespace => e['namespace'],
+       :statistics => e['statistics'],
+       :dimensions => e['dimensions'],
+       :measure_name => e['metric_name']}
+    }
   end
 
   def start
@@ -39,8 +48,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   private
   def watch
     while true
-      t, d = output
-      Fluent::Engine.emit(tag, t, d)
+      Fluent::Engine.emit(tag, Fluent::Engine.now, output)
       sleep 60 * 5
     end
   end
@@ -48,27 +56,22 @@ class Fluent::CloudwatchInput < Fluent::Input
   def output
     end_time = Time.now
     start_time = end_time - 60 * 60
-    stat = @mon.get_metric_statistics(
-      :namespace => namespace,
-      :statistics => statistics,
-      :dimensions => dimensions,
-      :measure_name => metric_name,
-      :start_time => start_time,
-      :end_time => end_time)
-
-    format(stat)
+    @metrics.map {|m|
+      m[:start_time] = start_time
+      m[:end_time] = end_time
+      format m, @mon.get_metric_statistics(m)
+    }
   end
 
-  def format(s)
+  def format(m, s)
     d = s["GetMetricStatisticsResult"]["Datapoints"]["member"].sort {|a,b|
       time(a) <=> time(b)
     }.last
 
-    t = Time.parse d.delete("Timestamp")
-    d["MetricName"] = metric_name
-    d["Statistics"] = statistics
-    d["Value"] = d.delete(statistics)
-    [t, d]
+    d["MetricName"] = m[:measure_name]
+    d["Statistics"] = m[:statistics]
+    d["Value"] = d.delete(m[:statistics])
+    d
   end
 
   def time(d)
