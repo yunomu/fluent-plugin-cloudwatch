@@ -1,0 +1,49 @@
+= Fluent::Plugin::Cloudwatch
+
+Plugin for AWS CloudWatch.
+
+== Installation
+
+Add this line to your application's Gemfile:
+
+    gem 'fluent-plugin-cloudwatch'
+
+And then execute:
+
+    $ bundle
+
+Or install it yourself as:
+
+    $ gem install fluent-plugin-cloudwatch
+
+== Configuration
+
+ <source>
+   type cloudwatch
+   tag cloudwatch
+   access_key XXXXXXXXXX
+   secret_key XXXXXXXXXX
+   endpoint monitoring.ap-northeast-1.amazonaws.com
+ 
+   <metric>
+     namespace AWS/EC2
+     statistics Average
+     dimensions InstanceId=i-xxxxxxxx
+     metric_name CPUUtilization
+   </metric>
+   <metric>
+     namespace AWS/EC2
+     statistics Sum
+     dimensions InstanceId=i-xxxxxxxx
+     metric_name NetworkIn
+   </metric>
+ </source>
+
+
+== Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
