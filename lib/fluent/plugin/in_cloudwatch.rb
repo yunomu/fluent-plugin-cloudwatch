@@ -5,10 +5,6 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :access_key, :string
   config_param :secret_key, :string
   config_param :endpoint, :string, :default => "monitoring.amazonaws.com"
-#  config_param :namespace, :string
-#  config_param :statistics, :string
-#  config_param :dimensions, :string
-#  config_param :metric_name, :string
 
   def initialize
     super
