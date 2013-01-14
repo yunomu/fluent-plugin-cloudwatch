@@ -4,16 +4,16 @@ $:.push File.expand_path("../lib", __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Yusuke Nomura"]
   gem.email         = ["yunomu@gmail.com"]
-  gem.description   = %q{Input plugin}
-  gem.summary       = %q{Input plugin}
-  gem.homepage      = "https://github.com/yunomu"
+  gem.description   = %q{Input plugin for AWS CloudWatch.}
+  gem.summary       = %q{Input plugin for AWS CloudWatch}
+  gem.homepage      = "https://github.com/yunomu/fluent-plugin-cloudwatch"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "fluent-plugin-cloudwatch"
   gem.require_paths = ["lib"]
-  gem.version       = "0.0.1"
+  gem.version       = "1.0.0"
 
   gem.add_development_dependency "fluentd"
   gem.add_runtime_dependency "fluentd"
