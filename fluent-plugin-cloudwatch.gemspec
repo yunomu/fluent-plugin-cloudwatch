@@ -1,20 +1,19 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
+lib = File.expand_path('../lib', __FILE__)
+$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
+  gem.name          = "fluent-plugin-cloudwatch"
+  gem.version       = "1.0.1"
   gem.authors       = ["Yusuke Nomura"]
   gem.email         = ["yunomu@gmail.com"]
   gem.description   = %q{Input plugin for AWS CloudWatch.}
-  gem.summary       = %q{Input plugin for AWS CloudWatch}
   gem.homepage      = "https://github.com/yunomu/fluent-plugin-cloudwatch"
-
+  gem.summary       = gem.description
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "fluent-plugin-cloudwatch"
   gem.require_paths = ["lib"]
-  gem.version       = "1.0.0"
-
-  gem.add_development_dependency "fluentd"
-  gem.add_runtime_dependency "fluentd"
+  gem.add_dependency "fluentd", "~> 0.10.30"
+  gem.add_dependency "aws-sdk", "= 1.8.3"
 end
