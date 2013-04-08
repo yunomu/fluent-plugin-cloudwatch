@@ -12,6 +12,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :dimensions_name,   :string, :default => nil
   config_param :dimensions_value,  :string, :default => nil
   config_param :period,            :integer, :default => 60
+  config_param :interval,          :integer, :default => 60
 
 
    def initialize
@@ -42,7 +43,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   private
   def watch
     while true
-      sleep 60
+      sleep @interval
       output
     end
   end
