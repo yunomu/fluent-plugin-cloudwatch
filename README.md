@@ -26,6 +26,7 @@ get metrics from cloudwatch.
   dimensions_name  [dimensions_name]
   dimensions_value [dimensions value]
   period           [period] (default: 60)
+  interval         [interval] (default: 60)
 </source>
 
 ```
