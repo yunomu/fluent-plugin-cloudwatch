@@ -64,10 +64,11 @@ class Fluent::CloudwatchInput < Fluent::Input
       })
       unless statistics[:datapoints].empty?
         stat = @statistics.downcase.to_sym
-        data = statistics[:datapoints][0][stat]
+        datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.last
+        data = datapoint[stat]
 
         # unix time
-        catch_time = statistics[:datapoints][0][:timestamp].to_i
+        catch_time = datapoint[:timestamp].to_i
 
         # no output_data.to_json
         output_data = {m => data}
