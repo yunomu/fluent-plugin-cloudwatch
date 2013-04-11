@@ -135,6 +135,33 @@ get metrics from cloudwatch.
 
 ```
 
+### GET DynamoDB Metirc
+
+```config
+  type cloudwatch
+  tag  cloudwatch
+  aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET/KE
+  cw_endpoint monitoring.ap-northeast-1.amazonaws.com
+
+  namespace AWS/DynamoDB
+  metric_name ConsumedReadCapacityUnits,ConsumedWriteCapacityUnits
+  dimensions_name TableName
+  dimensions_value ppc-production-visit
+  statistics Sum 
+  interval 300
+  period 300
+```
+
+#### output data format
+
+```
+
+2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedReadCapacityUnits":8271.5}
+2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedWriteCapacityUnits":2765.5}
+
+```
+
 ## Contributing
 
 1. Fork it
