@@ -147,7 +147,7 @@ get metrics from cloudwatch.
   namespace AWS/DynamoDB
   metric_name ConsumedReadCapacityUnits,ConsumedWriteCapacityUnits
   dimensions_name TableName
-  dimensions_value ppc-production-visit
+  dimensions_value some_dd_tablename
   statistics Sum 
   interval 300
   period 300
