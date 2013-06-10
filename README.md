@@ -162,6 +162,33 @@ get metrics from cloudwatch.
 
 ```
 
+### GET Billing Metirc
+
+Note: Billing requires the us-east-1 endpoint
+```config
+  type cloudwatch
+  tag  cloudwatch aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET/KE
+  cw_endpoint monitoring.us-east-1.amazonaws.com
+
+  namespace AWS/Billing
+  metric_name EstimatedCharges
+  dimensions_name Currency
+  dimensions_value USD
+  statistics Average
+  interval 7200
+  period 21600
+```
+
+#### output data format
+
+```
+
+2013-06-10 02:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"543.175"}
+2013-06-10 04:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"550.39"}
+
+```
+
 ## Contributing
 
 1. Fork it
