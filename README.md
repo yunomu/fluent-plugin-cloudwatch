@@ -147,7 +147,7 @@ get metrics from cloudwatch.
   namespace AWS/DynamoDB
   metric_name ConsumedReadCapacityUnits,ConsumedWriteCapacityUnits
   dimensions_name TableName
-  dimensions_value ppc-production-visit
+  dimensions_value some_dd_tablename
   statistics Sum 
   interval 300
   period 300
@@ -159,6 +159,33 @@ get metrics from cloudwatch.
 
 2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedReadCapacityUnits":8271.5}
 2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedWriteCapacityUnits":2765.5}
+
+```
+
+### GET Billing Metirc
+
+Note: Billing requires the us-east-1 endpoint
+```config
+  type cloudwatch
+  tag  cloudwatch aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET/KE
+  cw_endpoint monitoring.us-east-1.amazonaws.com
+
+  namespace AWS/Billing
+  metric_name EstimatedCharges
+  dimensions_name Currency
+  dimensions_value USD
+  statistics Average
+  interval 7200
+  period 21600
+```
+
+#### output data format
+
+```
+
+2013-06-10 02:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"543.175"}
+2013-06-10 04:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"550.39"}
 
 ```
 
