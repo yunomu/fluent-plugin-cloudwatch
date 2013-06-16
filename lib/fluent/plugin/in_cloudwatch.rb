@@ -11,8 +11,8 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :statistics,        :string, :default => "Average"
   config_param :dimensions_name,   :string, :default => nil
   config_param :dimensions_value,  :string, :default => nil
-  config_param :period,            :integer, :default => 60
-  config_param :interval,          :integer, :default => 60
+  config_param :period,            :integer, :default => 300
+  config_param :interval,          :integer, :default => 300
 
 
    def initialize
