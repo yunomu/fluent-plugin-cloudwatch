@@ -7,8 +7,8 @@
 this plugin is simple.  
 get metrics from cloudwatch.
 
-1. get every 60 seconds from AWS CloudWatch API(sleep 1sec)
-2. 60 seconds of data
+1. get every 300 seconds from AWS CloudWatch API(sleep 1sec)
+2. 300 seconds of data
 
 ## Configuration
 
@@ -25,8 +25,8 @@ get metrics from cloudwatch.
   metric_name      [metric name]
   dimensions_name  [dimensions_name]
   dimensions_value [dimensions value]
-  period           [period] (default: 60)
-  interval         [interval] (default: 60)
+  period           [period] (default: 300)
+  interval         [interval] (default: 300)
 </source>
 
 ```
