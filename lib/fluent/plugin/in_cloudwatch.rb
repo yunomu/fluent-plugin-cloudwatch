@@ -13,6 +13,8 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :dimensions_value,  :string, :default => nil
   config_param :period,            :integer, :default => 300
   config_param :interval,          :integer, :default => 300
+  config_param :open_timeout,      :integer, :default => 10
+  config_param :read_timeout,      :integer, :default => 30
 
 
    def initialize
@@ -22,6 +24,12 @@ class Fluent::CloudwatchInput < Fluent::Input
 
   def configure(conf)
     super
+
+    AWS.config(
+      :http_open_timeout => @open_timeout,
+      :http_read_timeout => @read_timeout,
+    )
+
     @cw = AWS::CloudWatch.new(
       :access_key_id        => @aws_key_id,
       :secret_access_key    => @aws_sec_key,
