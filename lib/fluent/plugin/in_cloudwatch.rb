@@ -25,7 +25,7 @@ class Fluent::CloudwatchInput < Fluent::Input
     @cw = AWS::CloudWatch.new(
       :access_key_id        => @aws_key_id,
       :secret_access_key    => @aws_sec_key,
-      :cloud_watch_endpoint => @cw_endpoint
+      :cloud_watch_endpoint => @cw_endpoint,
     ).client
   end
 
@@ -56,11 +56,11 @@ class Fluent::CloudwatchInput < Fluent::Input
         :statistics  => [@statistics],
         :dimensions  => [{
           :name  => @dimensions_name,
-          :value => @dimensions_value
+          :value => @dimensions_value,
         }],
         :start_time  => (Time.now - @period*2).iso8601,
         :end_time    => Time.now.iso8601,
-        :period      => @period
+        :period      => @period,
       })
       unless statistics[:datapoints].empty?
         stat = @statistics.downcase.to_sym
