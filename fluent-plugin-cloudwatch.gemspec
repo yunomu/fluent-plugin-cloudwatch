@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = "fluent-plugin-cloudwatch"
-  gem.version       = "1.2.4"
+  gem.version       = "1.2.5"
   gem.authors       = ["Yusuke Nomura", "kenjiskywalker"]
   gem.email         = ["yunomu@gmail.com", "git@kenjiskywalker.org"]
   gem.description   = %q{Input plugin for AWS CloudWatch.}
@@ -16,4 +16,5 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.add_dependency "fluentd", "~> 0.10.30"
   gem.add_dependency "aws-sdk", "= 1.8.3"
+  gem.license = 'MIT'
 end
