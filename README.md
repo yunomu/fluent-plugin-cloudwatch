@@ -1,4 +1,4 @@
-# fluent-plugin-cloudwatch
+# fluent-plugin-cloudwatch [![Build Status](https://travis-ci.org/yunomu/fluent-plugin-cloudwatch.png)](https://travis-ci.org/yunomu/fluent-plugin-cloudwatch/)
 
 
 ## Overview
