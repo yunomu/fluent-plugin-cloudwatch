@@ -31,6 +31,7 @@ class CloudwatchInputTest < Test::Unit::TestCase
     assert_equal 'CPUUtilization,FreeStorageSpace,DiskQueueDepth,FreeableMemory,SwapUsage,ReadIOPS,ReadLatency,ReadThroughput,WriteIOPS,WriteLatency,WriteThroughput', d.instance.metric_name
     assert_equal 'DBInstanceIdentifier', d.instance.dimensions_name
     assert_equal 'rds01', d.instance.dimensions_value
+    assert_equal [{ :name => 'DBInstanceIdentifier', :value => 'rds01' }], d.instance.dimensions
   end
 
 
@@ -60,6 +61,36 @@ class CloudwatchInputTest < Test::Unit::TestCase
     assert_equal 'CPUUtilization,FreeStorageSpace,DiskQueueDepth,FreeableMemory,SwapUsage,ReadIOPS,ReadLatency,ReadThroughput,WriteIOPS,WriteLatency,WriteThroughput', d.instance.metric_name
     assert_equal 'InstanceId', d.instance.dimensions_name
     assert_equal 'ec2-01', d.instance.dimensions_value
+    assert_equal [{ :name => 'InstanceId', :value => 'ec2-01' }], d.instance.dimensions
+  end
+
+  ### for StorageGateway
+  CONFIG_SG = %[
+    tag cloudwatch
+    aws_key_id test_key_id
+    aws_sec_key test_sec_key
+    cw_endpoint test_cloud_watch_endpoint
+    namespace AWS/StorageGateway
+    metric_name CacheHitPercent,CachePercentUsed
+    dimensions_name GatewayId,GatewayName
+    dimensions_value sgw-XXXXXXXX,mygateway
+  ]
+
+  def create_driver_sg(conf = CONFIG_SG)
+    Fluent::Test::InputTestDriver.new(Fluent::CloudwatchInput).configure(conf)
+  end
+
+  def test_configure_sg
+    d = create_driver_sg
+    assert_equal 'cloudwatch', d.instance.tag
+    assert_equal 'test_key_id', d.instance.aws_key_id
+    assert_equal 'test_sec_key', d.instance.aws_sec_key
+    assert_equal 'test_cloud_watch_endpoint', d.instance.cw_endpoint
+    assert_equal 'AWS/StorageGateway', d.instance.namespace
+    assert_equal 'CacheHitPercent,CachePercentUsed', d.instance.metric_name
+    assert_equal 'GatewayId,GatewayName', d.instance.dimensions_name
+    assert_equal 'sgw-XXXXXXXX,mygateway', d.instance.dimensions_value
+    assert_equal [{ :name => "GatewayId", :value => "sgw-XXXXXXXX" }, { :name => "GatewayName", :value => "mygateway" }], d.instance.dimensions
   end
 
 end

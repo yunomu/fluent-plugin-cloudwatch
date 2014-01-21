@@ -16,14 +16,32 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :open_timeout,      :integer, :default => 10
   config_param :read_timeout,      :integer, :default => 30
 
+  attr_accessor :dimensions
 
-   def initialize
+  def initialize
     super
     require 'aws-sdk'
   end
 
   def configure(conf)
     super
+
+    @dimensions = []
+    if @dimensions_name && @dimensions_value
+      names = @dimensions_name.split(",").each
+      values = @dimensions_value.split(",").each
+      loop do
+        @dimensions.push({
+          :name => names.next,
+          :value => values.next,
+        })
+      end
+    else
+      @dimensions.push({
+        :name => @dimensions_name,
+        :value => @dimensions_value,
+      })
+    end
 
     AWS.config(
       :http_open_timeout => @open_timeout,
@@ -62,10 +80,7 @@ class Fluent::CloudwatchInput < Fluent::Input
         :namespace   => @namespace,
         :metric_name => m,
         :statistics  => [@statistics],
-        :dimensions  => [{
-          :name  => @dimensions_name,
-          :value => @dimensions_value,
-        }],
+        :dimensions  => @dimensions,
         :start_time  => (Time.now - @period*2).iso8601,
         :end_time    => Time.now.iso8601,
         :period      => @period,

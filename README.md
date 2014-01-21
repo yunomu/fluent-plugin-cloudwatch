@@ -189,6 +189,29 @@ Note: Billing requires the us-east-1 endpoint
 
 ```
 
+### GET StorageGateway Metirc
+
+```config
+  type cloudwatch
+  tag  cloudwatch
+  aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET/KE
+  cw_endpoint monitoring.us-east-1.amazonaws.com
+
+  namespace AWS/StorageGateway
+  metric_name CacheHitPercent,CachePercentUsed
+  dimensions_name GatewayId,GatewayName
+  dimensions_value sgw-XXXXXXXX,mygateway
+  statistics Average
+```
+
+#### output data format
+
+```
+2014-01-20 20:12:00 +0900 cloudwatch: {"CacheHitPercent":0.0}
+2014-01-20 20:12:00 +0900 cloudwatch: {"CachePercentUsed":95.15519175634687}
+```
+
 ## Contributing
 
 1. Fork it
