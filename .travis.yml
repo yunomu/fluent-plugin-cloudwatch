@@ -4,6 +4,9 @@ rvm:
   - 1.9.3
   - 2.0.0
 
+gemfile:
+  - Gemfile
+  - Gemfile.fluentd.lt.0.10.43
 branches:
   only:
     - master
