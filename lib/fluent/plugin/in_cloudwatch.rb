@@ -1,6 +1,11 @@
 class Fluent::CloudwatchInput < Fluent::Input
   Fluent::Plugin.register_input("cloudwatch", self)
 
+  # To support log_level option implemented by Fluentd v0.10.43
+  unless method_defined?(:log)
+    define_method("log") { $log }
+  end
+
   config_param :tag,               :string
   config_param :aws_key_id,        :string, :default => nil
   config_param :aws_sec_key,       :string, :default => nil
@@ -96,6 +101,8 @@ class Fluent::CloudwatchInput < Fluent::Input
         # no output_data.to_json
         output_data = {m => data}
         Fluent::Engine.emit(tag, catch_time, output_data)
+      else
+        log.warn "cloudwatch: statistics[:datapoints] is empty"
       end
     }
     sleep 1
