@@ -66,7 +66,7 @@ class Fluent::CloudwatchInput < Fluent::Input
           :name  => @dimensions_name,
           :value => @dimensions_value,
         }],
-        :start_time  => (Time.now - @period*2).iso8601,
+        :start_time  => (Time.now - @period*5).iso8601,
         :end_time    => Time.now.iso8601,
         :period      => @period,
       })
