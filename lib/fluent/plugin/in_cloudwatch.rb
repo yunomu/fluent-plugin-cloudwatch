@@ -53,12 +53,6 @@ class Fluent::CloudwatchInput < Fluent::Input
       :http_open_timeout => @open_timeout,
       :http_read_timeout => @read_timeout,
     )
-
-    @cw = AWS::CloudWatch.new(
-      :access_key_id        => @aws_key_id,
-      :secret_access_key    => @aws_sec_key,
-      :cloud_watch_endpoint => @cw_endpoint,
-    ).client
   end
 
   def start
@@ -81,6 +75,12 @@ class Fluent::CloudwatchInput < Fluent::Input
       log.debug("delay at start #{delay} sec")
       sleep(delay)
     end
+
+    @cw = AWS::CloudWatch.new(
+      :access_key_id        => @aws_key_id,
+      :secret_access_key    => @aws_sec_key,
+      :cloud_watch_endpoint => @cw_endpoint,
+    ).client
 
     output
 
