@@ -20,6 +20,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :interval,          :integer, :default => 300
   config_param :open_timeout,      :integer, :default => 10
   config_param :read_timeout,      :integer, :default => 30
+  config_param :delayed_start,     :bool,    :default => false
 
   attr_accessor :dimensions
 
@@ -52,30 +53,45 @@ class Fluent::CloudwatchInput < Fluent::Input
       :http_open_timeout => @open_timeout,
       :http_read_timeout => @read_timeout,
     )
-
-    @cw = AWS::CloudWatch.new(
-      :access_key_id        => @aws_key_id,
-      :secret_access_key    => @aws_sec_key,
-      :cloud_watch_endpoint => @cw_endpoint,
-    ).client
   end
 
   def start
     super
+    @running = true
     @watcher = Thread.new(&method(:watch))
   end
 
   def shutdown
     super
+    @running = false
     @watcher.terminate
     @watcher.join
   end
 
   private
   def watch
-    while true
-      sleep @interval
-      output
+    if @delayed_start
+      delay = rand() * @interval
+      log.debug("delay at start #{delay} sec")
+      sleep(delay)
+    end
+
+    @cw = AWS::CloudWatch.new(
+      :access_key_id        => @aws_key_id,
+      :secret_access_key    => @aws_sec_key,
+      :cloud_watch_endpoint => @cw_endpoint,
+    ).client
+
+    output
+
+    started = Time.now
+    while @running
+      now = Time.now
+      sleep 1
+      if now - started >= @interval
+        output
+        started = now
+      end
     end
   end
 
@@ -86,7 +102,7 @@ class Fluent::CloudwatchInput < Fluent::Input
         :metric_name => m,
         :statistics  => [@statistics],
         :dimensions  => @dimensions,
-        :start_time  => (Time.now - @period*5).iso8601,
+        :start_time  => (Time.now - @period*10).iso8601,
         :end_time    => Time.now.iso8601,
         :period      => @period,
       })
@@ -102,9 +118,8 @@ class Fluent::CloudwatchInput < Fluent::Input
         output_data = {m => data}
         Fluent::Engine.emit(tag, catch_time, output_data)
       else
-        log.warn "cloudwatch: statistics[:datapoints] is empty"
+        log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{m} datapoints is empty"
       end
     }
-    sleep 1
   end
 end

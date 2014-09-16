@@ -2,13 +2,15 @@
 
 
 ## Overview
-***AWS CloudWatch*** input plugin.  
 
-this plugin is simple.  
-get metrics from cloudwatch.
+***AWS CloudWatch*** input plugin.
 
-1. get every 300 seconds from AWS CloudWatch API(sleep 1sec)
-2. 300 seconds of data
+This plugin is simple.
+Get metrics from cloudwatch to fluentd.
+
+* Get metrics from AWS CloudWatch API.
+  * Interval is 300(default. config=interval) seconds
+  * Fetch datapoints in recent (interval * 10) seconds, and emit the latest datapoint to Fluentd data stream.
 
 ## Configuration
 
@@ -27,8 +29,8 @@ get metrics from cloudwatch.
   dimensions_value [dimensions value]
   period           [period] (default: 300)
   interval         [interval] (default: 300)
+  delayed_start    [bool] (default: false)
 </source>
-
 ```
 
 ### GET RDS Metric
@@ -94,13 +96,11 @@ get metrics from cloudwatch.
 #### output data format
 
 ```
-
 2013-03-21T14:08:00+09:00       cloudwatch      {"HealthyHostCount":2.0}
 2013-03-21T14:08:00+09:00       cloudwatch      {"HTTPCode_Backend_2XX":1.0}
 2013-03-21T14:08:00+09:00       cloudwatch      {"Latency":0.004025}
 2013-03-21T14:08:00+09:00       cloudwatch      {"RequestCount":1.0}
 2013-03-21T14:09:00+09:00       cloudwatch      {"UnHealthyHostCount":0.0}
-
 ```
 
 
@@ -124,7 +124,6 @@ get metrics from cloudwatch.
 #### output data format
 
 ```
-
 2013-02-25T00:44:00+09:00       cloudwatch      {"CPUUtilization":1.58}
 2013-02-25T00:44:00+09:00       cloudwatch      {"DiskReadBytes":0.0}
 2013-02-25T00:44:00+09:00       cloudwatch      {"DiskReadBytes":0.0}
@@ -132,7 +131,6 @@ get metrics from cloudwatch.
 2013-02-25T00:44:00+09:00       cloudwatch      {"DiskWriteOps":0.0}
 2013-02-25T00:44:00+09:00       cloudwatch      {"NetworkIn":95183.0}
 2013-02-25T00:44:00+09:00       cloudwatch      {"NetworkOut":95645.0}
-
 ```
 
 ### GET DynamoDB Metirc
@@ -156,10 +154,8 @@ get metrics from cloudwatch.
 #### output data format
 
 ```
-
 2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedReadCapacityUnits":8271.5}
 2013-04-11 15:13:00 +0900       cloudwatch      {"ConsumedWriteCapacityUnits":2765.5}
-
 ```
 
 ### GET Billing Metirc
@@ -183,10 +179,8 @@ Note: Billing requires the us-east-1 endpoint
 #### output data format
 
 ```
-
 2013-06-10 02:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"543.175"}
 2013-06-10 04:03:00 +0900       cloudwatch      {"EstimatedCharges_in_USD":"550.39"}
-
 ```
 
 ### GET StorageGateway Metirc
@@ -211,6 +205,11 @@ Note: Billing requires the us-east-1 endpoint
 2014-01-20 20:12:00 +0900 cloudwatch: {"CacheHitPercent":0.0}
 2014-01-20 20:12:00 +0900 cloudwatch: {"CachePercentUsed":95.15519175634687}
 ```
+
+
+## config: delayed_start
+
+When config `delayed_start` is set true, plugin startup will be delayed in random seconds(0 ~ interval).
 
 ## Contributing
 

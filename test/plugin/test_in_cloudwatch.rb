@@ -93,4 +93,27 @@ class CloudwatchInputTest < Test::Unit::TestCase
     assert_equal [{ :name => "GatewayId", :value => "sgw-XXXXXXXX" }, { :name => "GatewayName", :value => "mygateway" }], d.instance.dimensions
   end
 
+  ### delayed_start
+  CONFIG_DELAYED_START = CONFIG_RDS + %[
+    delayed_start true
+  ]
+
+  def create_driver_delayed_start(conf = CONFIG_DELAYED_START)
+    Fluent::Test::InputTestDriver.new(Fluent::CloudwatchInput).configure(conf)
+  end
+
+  def test_configure_delayed_start
+    d = create_driver_delayed_start
+    assert_equal 'cloudwatch', d.instance.tag
+    assert_equal 'test_key_id', d.instance.aws_key_id
+    assert_equal 'test_sec_key', d.instance.aws_sec_key
+    assert_equal 'test_cloud_watch_endpoint', d.instance.cw_endpoint
+    assert_equal 'AWS/RDS', d.instance.namespace
+    assert_equal 'CPUUtilization,FreeStorageSpace,DiskQueueDepth,FreeableMemory,SwapUsage,ReadIOPS,ReadLatency,ReadThroughput,WriteIOPS,WriteLatency,WriteThroughput', d.instance.metric_name
+    assert_equal 'DBInstanceIdentifier', d.instance.dimensions_name
+    assert_equal 'rds01', d.instance.dimensions_value
+    assert_equal [{ :name => 'DBInstanceIdentifier', :value => 'rds01' }], d.instance.dimensions
+    assert_equal true, d.instance.delayed_start
+  end
+
 end
