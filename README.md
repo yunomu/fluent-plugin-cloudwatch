@@ -83,7 +83,7 @@ Get metrics from cloudwatch to fluentd.
   type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
-  aws_sec_key YOUR_AWS_SECRET/KE
+  aws_sec_key YOUR_AWS_SECRET_KEY
   cw_endpoint monitoring.ap-northeast-1.amazonaws.com
 
   namespace AWS/ELB
@@ -111,7 +111,7 @@ Get metrics from cloudwatch to fluentd.
   type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
-  aws_sec_key YOUR_AWS_SECRET/KE
+  aws_sec_key YOUR_AWS_SECRET_KEY
   cw_endpoint monitoring.ap-northeast-1.amazonaws.com
 
   namespace AWS/EC2
@@ -139,7 +139,7 @@ Get metrics from cloudwatch to fluentd.
   type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
-  aws_sec_key YOUR_AWS_SECRET/KE
+  aws_sec_key YOUR_AWS_SECRET_KEY
   cw_endpoint monitoring.ap-northeast-1.amazonaws.com
 
   namespace AWS/DynamoDB
@@ -163,8 +163,9 @@ Get metrics from cloudwatch to fluentd.
 Note: Billing requires the us-east-1 endpoint
 ```config
   type cloudwatch
-  tag  cloudwatch aws_key_id  YOUR_AWS_KEY_ID
-  aws_sec_key YOUR_AWS_SECRET/KE
+  tag  cloudwatch
+  aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET_KEY
   cw_endpoint monitoring.us-east-1.amazonaws.com
 
   namespace AWS/Billing
@@ -189,7 +190,7 @@ Note: Billing requires the us-east-1 endpoint
   type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
-  aws_sec_key YOUR_AWS_SECRET/KE
+  aws_sec_key YOUR_AWS_SECRET_KEY
   cw_endpoint monitoring.us-east-1.amazonaws.com
 
   namespace AWS/StorageGateway
