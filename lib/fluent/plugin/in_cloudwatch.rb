@@ -6,6 +6,11 @@ class Fluent::CloudwatchInput < Fluent::Input
     define_method("log") { $log }
   end
 
+  # Define `router` method of v0.12 to support v0.10 or earlier
+  unless method_defined?(:router)
+    define_method("router") { Fluent::Engine }
+  end
+
   config_param :tag,               :string
   config_param :aws_key_id,        :string, :default => nil
   config_param :aws_sec_key,       :string, :default => nil
@@ -116,7 +121,7 @@ class Fluent::CloudwatchInput < Fluent::Input
 
         # no output_data.to_json
         output_data = {m => data}
-        Fluent::Engine.emit(tag, catch_time, output_data)
+        router.emit(tag, catch_time, output_data)
       else
         log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{m} datapoints is empty"
       end
