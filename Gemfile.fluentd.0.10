@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
-# Specify your gem's dependencies in fluent-plugin-zabbix.gemspec
+# Specify your gem's dependencies in fluent-plugin-cloudwatch.gemspec
 gem 'fluentd', '~> 0.10'
 gemspec
