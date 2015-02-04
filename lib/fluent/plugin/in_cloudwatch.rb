@@ -62,23 +62,48 @@ class Fluent::CloudwatchInput < Fluent::Input
 
   def start
     super
+
     @running = true
+    @updated = Time.now
     @watcher = Thread.new(&method(:watch))
+    @monitor = Thread.new(&method(:monitor))
+    @mutex   = Mutex.new
   end
 
   def shutdown
     super
     @running = false
     @watcher.terminate
+    @monitor.terminate
     @watcher.join
+    @monitor.join
   end
 
   private
+
+  # if watcher thread was not update timestamp in recent @interval * 2 sec., restarting it.
+  def monitor
+    log.debug "cloudwatch: monitor thread starting"
+    while @running
+      sleep @interval / 2
+      @mutex.synchronize do
+        log.debug "cloudwatch: last updated at #{@updated}"
+        now = Time.now
+        if @updated < now - @interval * 2
+          log.warn "cloudwatch: watcher thread is not working after #{@updated}. Restarting..."
+          @watcher.kill
+          @updated = now
+          @watcher = Thread.new(&method(:watch))
+        end
+      end
+    end
+  end
+
   def watch
     if @delayed_start
       delay = rand() * @interval
-      log.debug("delay at start #{delay} sec")
-      sleep(delay)
+      log.debug "cloudwatch: delay at start #{delay} sec"
+      sleep delay
     end
 
     @cw = AWS::CloudWatch.new(
@@ -96,6 +121,9 @@ class Fluent::CloudwatchInput < Fluent::Input
       if now - started >= @interval
         output
         started = now
+        @mutex.synchronize do
+          @updated = Time.now
+        end
       end
     end
   end
