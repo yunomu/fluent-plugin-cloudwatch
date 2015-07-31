@@ -12,8 +12,8 @@ class Fluent::CloudwatchInput < Fluent::Input
   end
 
   config_param :tag,               :string
-  config_param :aws_key_id,        :string, :default => nil
-  config_param :aws_sec_key,       :string, :default => nil
+  config_param :aws_key_id,        :string, :default => nil, :secret => true
+  config_param :aws_sec_key,       :string, :default => nil, :secret => true
   config_param :cw_endpoint,       :string, :default => nil
 
   config_param :namespace,         :string, :default => nil
