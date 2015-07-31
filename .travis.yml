@@ -9,3 +9,8 @@ rvm:
 gemfile:
   - Gemfile
   - Gemfile.fluentd.0.10
+
+matrix:
+  exclude:
+    - rvm: 2.2
+      gemfile: Gemfile.fluentd.0.10
