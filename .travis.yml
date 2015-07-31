@@ -3,8 +3,14 @@ language: ruby
 rvm:
   - 1.9.3
   - 2.0.0
-  - 2.1.5
+  - 2.1
+  - 2.2
 
 gemfile:
   - Gemfile
   - Gemfile.fluentd.0.10
+
+matrix:
+  exclude:
+    - rvm: 2.2
+      gemfile: Gemfile.fluentd.0.10
