@@ -212,6 +212,16 @@ Note: Billing requires the us-east-1 endpoint
 
 When config `delayed_start` is set true, plugin startup will be delayed in random seconds(0 ~ interval).
 
+## config: offset
+
+unit: seconds.
+
+flunet-plugin-cloudwatch gets metrics between now and `period` &times; 10 sec ago, and pick a latest value from that.
+
+But the latest metric is insufficient for `statistics Sum`.
+
+If `offset` is specified, fluent-plugin-cloudwatch gets metrics between `offset` sec ago and older.
+
 ## Contributing
 
 1. Fork it

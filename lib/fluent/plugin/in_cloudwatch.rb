@@ -26,6 +26,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :open_timeout,      :integer, :default => 10
   config_param :read_timeout,      :integer, :default => 30
   config_param :delayed_start,     :bool,    :default => false
+  config_param :offset,            :integer, :default => 0
 
   attr_accessor :dimensions
 
@@ -130,13 +131,14 @@ class Fluent::CloudwatchInput < Fluent::Input
 
   def output
     @metric_name.split(",").each {|m|
+      now = Time.now - @offset
       statistics = @cw.get_metric_statistics({
         :namespace   => @namespace,
         :metric_name => m,
         :statistics  => [@statistics],
         :dimensions  => @dimensions,
-        :start_time  => (Time.now - @period*10).iso8601,
-        :end_time    => Time.now.iso8601,
+        :start_time  => (now - @period*10).iso8601,
+        :end_time    => now.iso8601,
         :period      => @period,
       })
       unless statistics[:datapoints].empty?
