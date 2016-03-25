@@ -213,7 +213,7 @@ Note: Billing requires the us-east-1 endpoint
 - `MetricName`
 - `MetricName:Statstics`
 
-For example, below configuration retrive "Sum of RequestCount" and "Average of Latancy".
+For example, this configuration fetches "Sum of RequestCount" and "Average of Latancy".
 
 ```
   metric_name RequestCount,Latency:Average
