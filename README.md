@@ -207,6 +207,18 @@ Note: Billing requires the us-east-1 endpoint
 2014-01-20 20:12:00 +0900 cloudwatch: {"CachePercentUsed":95.15519175634687}
 ```
 
+## config: Complex metric_name
+
+`metric_name` format is allowed as below.
+- `MetricName`
+- `MetricName:Statstics`
+
+For example, below configuration retrive "Sum of RequestCount" and "Average of Latancy".
+
+```
+  metric_name RequestCount,Latency:Average
+  statistics Sum
+```
 
 ## config: delayed_start
 
