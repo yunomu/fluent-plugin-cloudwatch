@@ -145,7 +145,7 @@ class Fluent::CloudwatchInput < Fluent::Input
         :period      => @period,
       })
       if not statistics[:datapoints].empty?
-        datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.first
+        datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.last
         data = datapoint[s.downcase.to_sym]
 
         # unix time
