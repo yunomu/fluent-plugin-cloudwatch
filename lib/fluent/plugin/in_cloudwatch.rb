@@ -145,15 +145,14 @@ class Fluent::CloudwatchInput < Fluent::Input
         :period      => @period,
       })
       if not statistics[:datapoints].empty?
-        datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.first
+        datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.last
         data = datapoint[s.downcase.to_sym]
 
         # unix time
         catch_time = datapoint[:timestamp].to_i
         router.emit(tag, catch_time, { name => data })
       elsif @emit_zero
-        time = Fluent::Engine.now
-        router.emit(tag, time, {name => 0})
+        router.emit(tag, now.to_i, { name => 0 })
       else
         log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{name} #{s} datapoints is empty"
       end

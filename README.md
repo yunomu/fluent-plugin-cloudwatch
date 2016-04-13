@@ -30,6 +30,7 @@ Get metrics from cloudwatch to fluentd.
   period           [period] (default: 300)
   interval         [interval] (default: 300)
   delayed_start    [bool] (default: false)
+  emit_zero        [bool] (default: false)
 </source>
 ```
 
@@ -233,6 +234,10 @@ flunet-plugin-cloudwatch gets metrics between now and `period` &times; 10 sec ag
 But the latest metric is insufficient for `statistics Sum`.
 
 If `offset` is specified, fluent-plugin-cloudwatch gets metrics between `offset` sec ago and older.
+
+## config: emit_zero
+
+If `emit_zero` is true and cloudwatch datapoint is empty, fluent-plugin-cloudwatch emits 0 instead of warn log "datapoint is empty".
 
 ## Contributing
 
