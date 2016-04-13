@@ -27,6 +27,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :read_timeout,      :integer, :default => 30
   config_param :delayed_start,     :bool,    :default => false
   config_param :offset,            :integer, :default => 0
+  config_param :emit_zero,         :bool,    :default => false
 
   attr_accessor :dimensions
 
@@ -143,13 +144,16 @@ class Fluent::CloudwatchInput < Fluent::Input
         :end_time    => now.iso8601,
         :period      => @period,
       })
-      unless statistics[:datapoints].empty?
+      if not statistics[:datapoints].empty?
         datapoint = statistics[:datapoints].sort_by{|h| h[:timestamp]}.first
         data = datapoint[s.downcase.to_sym]
 
         # unix time
         catch_time = datapoint[:timestamp].to_i
         router.emit(tag, catch_time, { name => data })
+      elsif @emit_zero
+        time = Fluent::Engine.now
+        router.emit(tag, time, {name => 0})
       else
         log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{name} #{s} datapoints is empty"
       end
