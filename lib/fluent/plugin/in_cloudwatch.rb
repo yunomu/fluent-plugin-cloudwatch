@@ -49,7 +49,7 @@ class Fluent::CloudwatchInput < Fluent::Input
           :value => values.next,
         })
       end
-    else
+    elsif @dimensions_name || @dimensions_value
       @dimensions.push({
         :name => @dimensions_name,
         :value => @dimensions_value,
