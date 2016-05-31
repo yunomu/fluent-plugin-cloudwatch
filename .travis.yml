@@ -11,14 +11,14 @@ rvm:
 
 gemfile:
   - Gemfile
-  - Gemfile.fluentd.0.12
   - Gemfile.fluentd.0.10
+  - Gemfile.fluentd.0.12
 
 matrix:
   exclude:
+    - rvm: 2.0.0
+      gemfile: Gemfile
     - rvm: 2.2.*
       gemfile: Gemfile.fluentd.0.10
     - rvm: 2.3.*
       gemfile: Gemfile.fluentd.0.10
-    - rvm: 2.0.0
-      gemfile: Gemfile.fluentd
