@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
 
 # Specify your gem's dependencies in fluent-plugin-cloudwatch.gemspec
-gem 'fluentd', '= 0.10.30'
+gem 'fluentd', '= 0.12.26'
 gemspec
