@@ -5,9 +5,9 @@ before_install:
 
 rvm:
   - 2.0.0
-  - 2.1.*
-  - 2.2.*
-  - 2.3.*
+  - 2.1.9
+  - 2.2.5
+  - 2.3.0
 
 gemfile:
   - Gemfile
@@ -18,7 +18,7 @@ matrix:
   exclude:
     - rvm: 2.0.0
       gemfile: Gemfile
-    - rvm: 2.2.*
+    - rvm: 2.2.5
       gemfile: Gemfile.fluentd.0.10
-    - rvm: 2.3.*
+    - rvm: 2.3.0
       gemfile: Gemfile.fluentd.0.10
