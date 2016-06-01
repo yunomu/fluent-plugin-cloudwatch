@@ -4,18 +4,9 @@ before_install:
   - gem update bundler
 
 rvm:
-  - 2.0.0
-  - 2.1.8
-  - 2.2.4
+  - 2.1.*
+  - 2.2.*
   - 2.3.0
-
 gemfile:
   - Gemfile
-  - Gemfile.fluentd.0.10
-
-matrix:
-  exclude:
-    - rvm: 2.2.4
-      gemfile: Gemfile.fluentd.0.10
-    - rvm: 2.3.0
-      gemfile: Gemfile.fluentd.0.10
+  - Gemfile.fluentd.0.12
