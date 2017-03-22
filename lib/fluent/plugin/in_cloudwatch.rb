@@ -1,3 +1,5 @@
+require 'fluent/input'
+
 class Fluent::CloudwatchInput < Fluent::Input
   Fluent::Plugin.register_input("cloudwatch", self)
 
