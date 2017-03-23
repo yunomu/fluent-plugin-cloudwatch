@@ -15,7 +15,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
   gem.add_dependency "fluentd", ">= 0.10.30"
-  gem.add_dependency "aws-sdk-v1", "~> 1.59.1"
+  gem.add_dependency "aws-sdk", "~> 2"
   gem.add_development_dependency "rake", ">= 0.9.2"
   gem.add_development_dependency "test-unit", ">= 3.1.0"
   gem.license = 'MIT'
