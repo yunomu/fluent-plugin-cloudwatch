@@ -1,4 +1,6 @@
 require 'fluent/input'
+require 'aws-sdk'
+require 'uri'
 
 class Fluent::CloudwatchInput < Fluent::Input
   Fluent::Plugin.register_input("cloudwatch", self)
@@ -35,7 +37,6 @@ class Fluent::CloudwatchInput < Fluent::Input
 
   def initialize
     super
-    require 'aws-sdk-v1'
   end
 
   def configure(conf)
@@ -58,10 +59,10 @@ class Fluent::CloudwatchInput < Fluent::Input
       })
     end
 
-    AWS.config(
-      :http_open_timeout => @open_timeout,
-      :http_read_timeout => @read_timeout,
-    )
+    endpoint = URI(@cw_endpoint)
+    if endpoint.scheme != "http" && endpoint.scheme != "https"
+      @cw_endpoint = "https://#{@cw_endpoint}"
+    end
   end
 
   def start
@@ -104,18 +105,20 @@ class Fluent::CloudwatchInput < Fluent::Input
   end
 
   def watch
+    log.debug "cloudwatch: watch thread starting"
     if @delayed_start
       delay = rand() * @interval
       log.debug "cloudwatch: delay at start #{delay} sec"
       sleep delay
     end
 
-    @cw = AWS::CloudWatch.new(
-      :access_key_id        => @aws_key_id,
-      :secret_access_key    => @aws_sec_key,
-      :cloud_watch_endpoint => @cw_endpoint,
-    ).client
-
+    @cw = Aws::CloudWatch::Client.new(
+      :access_key_id     => @aws_key_id,
+      :secret_access_key => @aws_sec_key,
+      :endpoint          => @cw_endpoint,
+      :http_open_timeout => @open_timeout,
+      :http_read_timeout => @read_timeout,
+    )
     output
 
     started = Time.now
@@ -137,6 +140,7 @@ class Fluent::CloudwatchInput < Fluent::Input
       name, s = m.split(":")
       s ||= @statistics
       now = Time.now - @offset
+      log.debug("now #{now}")
       statistics = @cw.get_metric_statistics({
         :namespace   => @namespace,
         :metric_name => name,
