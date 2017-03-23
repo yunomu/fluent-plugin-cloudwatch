@@ -61,7 +61,9 @@ class Fluent::CloudwatchInput < Fluent::Input
 
     endpoint = URI(@cw_endpoint)
     if endpoint.scheme != "http" && endpoint.scheme != "https"
-      @cw_endpoint = "https://#{@cw_endpoint}"
+      @cw_endpoint_uri = "https://#{@cw_endpoint}"
+    else
+      @cw_endpoint_uri = endpoint.to_s
     end
   end
 
@@ -115,7 +117,7 @@ class Fluent::CloudwatchInput < Fluent::Input
     @cw = Aws::CloudWatch::Client.new(
       :access_key_id     => @aws_key_id,
       :secret_access_key => @aws_sec_key,
-      :endpoint          => @cw_endpoint,
+      :endpoint          => @cw_endpoint_uri,
       :http_open_timeout => @open_timeout,
       :http_read_timeout => @read_timeout,
     )
