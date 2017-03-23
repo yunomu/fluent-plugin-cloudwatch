@@ -19,6 +19,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :aws_key_id,        :string, :default => nil, :secret => true
   config_param :aws_sec_key,       :string, :default => nil, :secret => true
   config_param :cw_endpoint,       :string, :default => nil
+  config_param :region,            :string, :default => nil
 
   config_param :namespace,         :string, :default => nil
   config_param :metric_name,       :string, :default => nil
@@ -64,6 +65,10 @@ class Fluent::CloudwatchInput < Fluent::Input
       @cw_endpoint_uri = "https://#{@cw_endpoint}"
     else
       @cw_endpoint_uri = endpoint.to_s
+    end
+
+    if !@region
+      @region = @cw_endpoint.split('.')[1]
     end
   end
 
@@ -115,6 +120,7 @@ class Fluent::CloudwatchInput < Fluent::Input
     end
 
     @cw = Aws::CloudWatch::Client.new(
+      :region            => @region,
       :access_key_id     => @aws_key_id,
       :secret_access_key => @aws_sec_key,
       :endpoint          => @cw_endpoint_uri,
