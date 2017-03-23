@@ -16,7 +16,7 @@ Get metrics from cloudwatch to fluentd.
 
 ```config
 <source>
-  type cloudwatch
+  @type cloudwatch
   tag cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -38,7 +38,7 @@ Get metrics from cloudwatch to fluentd.
 
 ```config
 <source>
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -51,9 +51,9 @@ Get metrics from cloudwatch to fluentd.
 </source>
 
 <match cloudwatch>
-  type copy
+  @type copy
  <store>
-  type file
+  @type file
   path /var/log/td-agent/test
  </store>
 </match>
@@ -81,7 +81,7 @@ Get metrics from cloudwatch to fluentd.
 
 ```config
 <source>
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -109,7 +109,7 @@ Get metrics from cloudwatch to fluentd.
 
 ```config
 <source>
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -137,7 +137,7 @@ Get metrics from cloudwatch to fluentd.
 ### GET DynamoDB Metirc
 
 ```config
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -163,7 +163,7 @@ Get metrics from cloudwatch to fluentd.
 
 Note: Billing requires the us-east-1 endpoint
 ```config
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
@@ -188,7 +188,7 @@ Note: Billing requires the us-east-1 endpoint
 ### GET StorageGateway Metirc
 
 ```config
-  type cloudwatch
+  @type cloudwatch
   tag  cloudwatch
   aws_key_id  YOUR_AWS_KEY_ID
   aws_sec_key YOUR_AWS_SECRET_KEY
