@@ -16,6 +16,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   end
 
   config_param :tag,               :string
+  config_param :dimension_id,      :string, :default => nil
   config_param :aws_key_id,        :string, :default => nil, :secret => true
   config_param :aws_sec_key,       :string, :default => nil, :secret => true
   config_param :cw_endpoint,       :string, :default => nil
@@ -164,9 +165,9 @@ class Fluent::CloudwatchInput < Fluent::Input
 
         # unix time
         catch_time = datapoint[:timestamp].to_i
-        router.emit(tag, catch_time, { name => data })
+        router.emit(tag, catch_time, { name => data, "dimension_id" => dimension_id })
       elsif @emit_zero
-        router.emit(tag, now.to_i, { name => 0 })
+        router.emit(tag, now.to_i, { name => 0, "dimension_id" => dimension_id })
       else
         log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{name} #{s} datapoints is empty"
       end
