@@ -239,6 +239,36 @@ If `offset` is specified, fluent-plugin-cloudwatch gets metrics between `offset`
 
 If `emit_zero` is true and cloudwatch datapoint is empty, fluent-plugin-cloudwatch emits 0 instead of warn log "datapoint is empty".
 
+## config: record_attr
+
+`record_attr` is an optional value injected into each records.
+
+```
+<source>
+  @type cloudwatch
+  tag  cloudwatch.rds
+  aws_key_id  YOUR_AWS_KEY_ID
+  aws_sec_key YOUR_AWS_SECRET_KEY
+  cw_endpoint monitoring.ap-northeast-1.amazonaws.com
+
+  namespace AWS/RDS
+  metric_name CPUUtilization,FreeStorageSpace
+  dimensions_name DBInstanceIdentifier
+  dimensions_value rds01
+  record_attr DBInstanceIdentifier:rds01
+  # JSON format
+  # record_attr {"DBInstanceIdentifier":"rds01"}
+</source>
+```
+
+Example output.
+
+```
+2017-11-04T13:40:00+09:00       cloudwatch      {"CPUUtilization":2.0,"DBInstanceIdentifier":"rds01"}
+2013-11-04T13:40:00+09:00       cloudwatch      {"FreeStorageSpace":104080723968.0,"DBInstanceIdentifier":"rds01"}
+```
+
+
 ## Contributing
 
 1. Fork it
