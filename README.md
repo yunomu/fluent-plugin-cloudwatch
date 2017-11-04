@@ -264,8 +264,8 @@ If `emit_zero` is true and cloudwatch datapoint is empty, fluent-plugin-cloudwat
 Example output.
 
 ```
-2017-11-04T13:40:00+09:00       cloudwatch      {"CPUUtilization":2.0,"DBInstanceIdentifier":"rds01"}
-2013-11-04T13:40:00+09:00       cloudwatch      {"FreeStorageSpace":104080723968.0,"DBInstanceIdentifier":"rds01"}
+2017-11-04T13:40:00+09:00       cloudwatch.rds      {"CPUUtilization":2.0,"DBInstanceIdentifier":"rds01"}
+2013-11-04T13:40:00+09:00       cloudwatch.rds      {"FreeStorageSpace":104080723968.0,"DBInstanceIdentifier":"rds01"}
 ```
 
 
