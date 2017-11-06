@@ -33,6 +33,7 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :delayed_start,     :bool,    :default => false
   config_param :offset,            :integer, :default => 0
   config_param :emit_zero,         :bool,    :default => false
+  config_param :record_attr,       :hash,    :default => {}
 
   attr_accessor :dimensions
 
@@ -164,9 +165,9 @@ class Fluent::CloudwatchInput < Fluent::Input
 
         # unix time
         catch_time = datapoint[:timestamp].to_i
-        router.emit(tag, catch_time, { name => data })
+        router.emit(tag, catch_time, { name => data }.merge(@record_attr))
       elsif @emit_zero
-        router.emit(tag, now.to_i, { name => 0 })
+        router.emit(tag, now.to_i, { name => 0 }.merge(@record_attr))
       else
         log.warn "cloudwatch: #{@namespace} #{@dimensions_name} #{@dimensions_value} #{name} #{s} datapoints is empty"
       end
