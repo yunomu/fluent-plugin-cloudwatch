@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |gem|
   gem.name          = "fluent-plugin-cloudwatch"
-  gem.version       = "2.0.1"
+  gem.version       = "2.1.0"
   gem.authors       = ["Yusuke Nomura", "kenjiskywalker", "FUJIWARA Shunichiro"]
   gem.email         = ["yunomu@gmail.com", "git@kenjiskywalker.org", "fujiwara.shunichiro@gmail.com"]
   gem.description   = %q{Input plugin for AWS CloudWatch.}
