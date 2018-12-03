@@ -6,7 +6,9 @@ before_install:
 rvm:
   - 2.1.*
   - 2.2.*
-  - 2.3.0
+  - 2.3.8
+  - 2.4.5
+  - 2.5.3
 gemfile:
   - Gemfile
   - Gemfile.fluentd.0.12
