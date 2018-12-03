@@ -1,5 +1,5 @@
 require 'fluent/input'
-require 'aws-sdk'
+require 'aws-sdk-cloudwatch'
 require 'uri'
 
 class Fluent::CloudwatchInput < Fluent::Input
