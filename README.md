@@ -208,6 +208,15 @@ Note: Billing requires the us-east-1 endpoint
 2014-01-20 20:12:00 +0900 cloudwatch: {"CachePercentUsed":95.15519175634687}
 ```
 
+## config: STS login
+```config
+  @type cloudwatch
+  aws_use_sts true
+  aws_sts_role_arn arn:aws:iam::ACCOUNT-B:role/fluentd
+  ...
+```
+
+
 ## config: Complex metric_name
 
 `metric_name` format is allowed as below.

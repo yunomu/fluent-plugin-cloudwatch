@@ -18,6 +18,9 @@ class Fluent::CloudwatchInput < Fluent::Input
   config_param :tag,               :string
   config_param :aws_key_id,        :string, :default => nil, :secret => true
   config_param :aws_sec_key,       :string, :default => nil, :secret => true
+  config_param :aws_use_sts,       :bool,   :default => false
+  config_param :aws_sts_role_arn,  :string, :default => nil
+  config_param :aws_sts_session_name, :string, :default => 'fluentd'
   config_param :cw_endpoint,       :string, :default => nil
   config_param :region,            :string, :default => nil
 
@@ -120,10 +123,22 @@ class Fluent::CloudwatchInput < Fluent::Input
       sleep delay
     end
 
+    if @aws_use_sts
+      credentials_options = {
+        role_arn: @aws_sts_role_arn,
+        role_session_name: @aws_sts_session_name
+      }
+      if @region
+        credentials_options[:client] = Aws::STS::Client.new(:region => @region)
+      end
+      client_param_credentials = Aws::AssumeRoleCredentials.new(credentials_options)
+    else
+      client_param_credentials = Aws::Credentials.new(@aws_key_id, @aws_sec_key) if @aws_key_id && @aws_sec_key
+    end
+
     @cw = Aws::CloudWatch::Client.new(
       :region            => @region,
-      :access_key_id     => @aws_key_id,
-      :secret_access_key => @aws_sec_key,
+      :credentials       => client_param_credentials,
       :endpoint          => @cw_endpoint_uri,
       :http_open_timeout => @open_timeout,
       :http_read_timeout => @read_timeout,
